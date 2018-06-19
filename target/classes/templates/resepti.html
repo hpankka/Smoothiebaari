@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Resepti</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+
+        <h1 th:text="${reseptinnimi}">resepti</h1>
+                
+        <ol>
+            <li th:each="ohje : ${ohjeet}">
+                <span th:text="${ohje}">Ohje</span>
+            </li>
+        </ol>
+        
+        <p>Lis&auml;&auml; ainekset j&auml;rjestyksess&auml; ja sekoita.</p>
+        
+        <a href="/reseptit">Takaisin resepteihin</a>
+        
+
+    </body>
+</html>

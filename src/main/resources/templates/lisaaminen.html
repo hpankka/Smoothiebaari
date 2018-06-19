@@ -1,0 +1,68 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Lis&auml;&auml; reseptej&auml;</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+
+        <h1>Lis&auml;&auml; reseptej&auml;</h1>
+        
+        <h2>K&auml;ytett&auml;viss&auml; olevat raaka-aineet</h2>
+        
+        <ul>
+            <li th:each="raakaAine : ${raakaAineet}">
+                <span th:text="${raakaAine.name}">RaakaAine</span>
+                <form th:action="@{~/lisaaminen/{id}/delete(id=${raakaAine.id})}" method="post">
+                    <input type="submit" value="Poista"/>                
+                </form>
+            </li>
+        </ul>
+        
+        <h3>Lis&auml;&auml; raaka-aineita (et voi lis&auml;t&auml; raaka-aineita, jotka ovat jo olemassa)</h3>
+        
+        <form method="POST" action="/lisaaminen">
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lis&auml;&auml;"/>
+        </form>
+        
+        
+        
+        <h2>Luo uusi resepti tai lis&auml;&auml; raaka-aineita vanhaan:</h2>
+        
+        <p>Anna uudelle reseptille nimi</p>
+        
+        <form method="POST" action="/lisaaminen/reseptillenimi">
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lis&auml;&auml;"/>
+        </form>
+        
+        <p>Lis&auml;&auml; raaka-aineita reseptiin</p>
+        <form method="POST" action="/lisaaminen/reseptilleraakaaine">
+            <p>Valitse resepti</p>            
+                <select name="annos">
+                    <option th:each="annos: ${annokset}" th:value="${annos.id}" th:text="${annos.name}">
+                            annos
+                    </option>
+                </select>
+            <p>Valitse raaka-aine</p>
+                <select name="raakaAine">
+                    <option th:each="raakaAine: ${raakaAineet}" th:value="${raakaAine.id}" th:text="${raakaAine.name}">
+                            raakaAine
+                    </option>
+                </select>
+            <p>Monentenako raaka-aine lis&auml;t&auml;&auml;n smoothieen?</p>
+            <input type="text" name="monesko"/><br/>
+            <p>M&auml;&auml;r&auml; (dl)</p>
+            <input type="text" name="paljonko"/><br/>
+            <p>Ohje raaka-aineen k&auml;sittelyyn (vapaaehtoinen)</p>
+            <input type="text" name="kasittely"/><br/>
+            <input type="submit" value="Lis&auml;&auml;"/>
+        </form>
+        
+        <a href="index">Takaisin smoothiebaariin</a>        
+
+    </body>
+</html>
