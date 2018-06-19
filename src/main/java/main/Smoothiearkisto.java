@@ -10,6 +10,7 @@ import dao.OhjeDao;
 import dao.RaakaAineDao;
 import dao.TilastoDao;
 import database.Database;
+import database.TaulujenLuonti;
 import domain.Annos;
 import domain.Ohje;
 import domain.RaakaAine;
@@ -39,6 +40,11 @@ public class Smoothiearkisto {
         
         File tiedosto = new File("db", "arkisto.db");
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
+        TaulujenLuonti taulut = new TaulujenLuonti(database);
+        taulut.luoTauluAnnos();
+        taulut.luoTauluRaakaAine();
+        taulut.luoTauluOhje();
+        
         RaakaAineDao raakaAineet = new RaakaAineDao(database);
         AnnosDao annokset = new AnnosDao(database);
         OhjeDao ohjeet = new OhjeDao(database);
