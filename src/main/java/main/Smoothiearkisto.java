@@ -129,8 +129,6 @@ public class Smoothiearkisto {
             map.put("annostenLkm", tilastot.haeAnnostenLukumaara());
             map.put("aineidenKaytto", tilastot.haeRaakaAineidenKayttomaarat());
 
-            System.out.println(tilastot.haeRaakaAineidenKayttomaarat().get(1));
-
             return new ModelAndView(map, "tilastot");
         }, new ThymeleafTemplateEngine());
     }
