@@ -32,13 +32,17 @@ public class Smoothiearkisto {
      */
     public static void main(String[] args) throws Throwable {
         // TODO code application logic here
+
+        if (System.getenv("PORT") != null) {
+            Spark.port(Integer.valueOf(System.getenv("PORT")));
+        }
+        
         File tiedosto = new File("db", "arkisto.db");
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
         RaakaAineDao raakaAineet = new RaakaAineDao(database);
         AnnosDao annokset = new AnnosDao(database);
         OhjeDao ohjeet = new OhjeDao(database);
         TilastoDao tilastot = new TilastoDao(database);
-
 
         Spark.get("/index", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -57,7 +61,7 @@ public class Smoothiearkisto {
         Spark.get("/reseptit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             Integer reseptinId = Integer.parseInt(req.params(":id"));
-            
+
             map.put("reseptinnimi", annokset.findByKey(reseptinId).getName());
             map.put("ohjeet", ohjeet.ohjeenTulostus(reseptinId));
 
@@ -65,10 +69,10 @@ public class Smoothiearkisto {
         }, new ThymeleafTemplateEngine());
 
         Spark.post("/reseptit/:id/delete", (req, res) -> {
-            
+
             ohjeet.delete(Integer.parseInt(req.params(":id")));
             annokset.delete(Integer.parseInt(req.params(":id")));
-            
+
             res.redirect("/reseptit");
 
             return "";
@@ -120,11 +124,11 @@ public class Smoothiearkisto {
 
         Spark.get("/tilastot", (req, res) -> {
             HashMap map = new HashMap<>();
-            
+
             map.put("raakaAineidenLkm", tilastot.haeRaakaAineidenLukumaara());
             map.put("annostenLkm", tilastot.haeAnnostenLukumaara());
             map.put("aineidenKaytto", tilastot.haeRaakaAineidenKayttomaarat());
-            
+
             System.out.println(tilastot.haeRaakaAineidenKayttomaarat().get(1));
 
             return new ModelAndView(map, "tilastot");
